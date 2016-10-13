@@ -56,22 +56,44 @@ shinyServer(
     #    )
     
     
-    ######################################################
-    ########## Data Entry & Download ##########
-    ######################################################
+    ##################################################
+    ########## Data Entry , Download & Date ##########
+    ##################################################
+    
+#    output$ui_study_type_data<-renderUI({
+#      if (is.null(input$study)) {return()}
+#      selectInput("dataset","Dataset:",dir("./data/Dekalb Main"))
+#      switch (input$study,
+#              "Dekalb Main" = selectInput("dataset","Dataset:",dir("./data/Dekalb Main")),
+#              "Dekalb Reproducibility" = selectInput("dataset","Dataset:",dir("./data/Dekalb Reproducibility")),
+#              "Health Donor" = selectInput("dataset","Dataset:",dir("./data/Health Donor")),
+#              "KEMRI Main" = selectInput("dataset","Dataset:",dir("./data/KEMRI Main"))
+#      )
+#    })
+    
+    
     data<-reactive({
       if (is.null(input$dataset)) {return()}
+#      document = input$study
+#      path = paste0("./data/",document)
       switch(input$dataset,
-             "dataset0.csv" = read.csv("./data/dataset0.csv"),
-             "dataset2.csv" = read.csv("./data/dataset2.csv"),
-             "dataset3.csv" = read.csv("./data/dataset3.csv")
+             "dataset0.csv" = read.csv("./data/Dekalb Main/dataset0.csv"),
+             "rsa2.csv" = read.csv("./data/Dekalb Main/rsa2.csv"),
+             "rsa3.csv" = read.csv("./data/Dekalb Main/rsa3.csv"),
+             "rsa4.csv" = read.csv("./data/Dekalb Main/rsa4.csv")
       )
     })
     
     output$download_data<-downloadHandler(
-      filename = function() {paste0("./data/",input$dataset)},
+      filename = function() {paste0("./data/Dekalb Main/",input$dataset)},
       content = function(file) {write.csv(data(),file)}
     )
+    
+    output$date<-renderText({
+      data<-data()
+      date_tmp = max(as.Date(data$import_dt,format="%d-%b-%y"),na.rm = T)
+      as.character(date_tmp)
+    })
     
     ##################################################################
     ###################################
@@ -361,7 +383,7 @@ shinyServer(
       data<-data()
       switch (input$across_type,
         "Peptides" = selectInput("ID_lpap","Present ID  (across PEPTIDE):",levels(factor(data$ID))),
-        "Individuals" = selectInput("peptides_lpai","Peptites  (across INDIVIDUAL):",levels(factor(data$Sample)))
+        "Individuals" = selectInput("peptides_lpai","Peptides  (all Subjects):",levels(factor(data$Sample)))
       )
     })
     
@@ -431,7 +453,7 @@ shinyServer(
       data<-data()
       switch (input$across_type,
               "Peptides" = selectInput("ID_lpap_s","Present ID  (across PEPTIDE):",levels(factor(data$ID))),
-              "Individuals" = selectInput("peptides_lpai_s","Peptites  (across INDIVIDUAL):",levels(factor(data$Sample)))
+              "Individuals" = selectInput("peptides_lpai_s","Peptides  (across INDIVIDUAL):",levels(factor(data$Sample)))
       )
     })
     
