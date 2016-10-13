@@ -23,10 +23,7 @@ library(reshape2)
 ######################
 ##### Data Entry #####
 ######################
-## Dataset2 - Original Function##
-path="./data/dataset0.csv"
-data <- read.csv(path)
-nr <- nrow(data)
+## just for test and debug
 
 
 ####################
@@ -37,29 +34,42 @@ shinyUI(
              ## 1.1 --- introduction ## ------------------------------------------------------------------------------------------------
              tabPanel("Introduction",
                       br(),
-                      #               HTML("<h1><b><center> T B R U </center></b></h1>"),
                       includeHTML("intro_tx.html")
-                      #               img(src='introduction.png')
-                      #               imageOutput("Intro1")
              ),
              ## 1.2 --- Data Exploration ## --------------------------------------------------------------------------------------------
              navbarMenu("Data Exploration", 
                         ## 1.2.1 --- Summary ## -------------------------------------------------------------------------
                         tabPanel("Summary",
                                  sidebarPanel(
-                                   h2("Research Backgroud"),
+#                                   h2("Research Backgroud"),
+#                                   br(),
+#                                   h3("This research ..."),br(),
+#                                   h3("1. Purpose"),p(),
+#                                   h3("2. Method"),p(),
+#                                   h3("3. Result"),p(),
+#                                   h3("4. Improvement"),br(),
+                                   h2("Study Type"),
                                    br(),
-                                   h3("This research ..."),br(),
-                                   h3("1. Purpose"),p(),
-                                   h3("2. Method"),p(),
-                                   h3("3. Result"),p(),
-                                   h3("4. Improvement"),br(),
-                                   h2("Dataset"),
-                                   h4("dataset0 : Test dataset, also use for testing TBRU app"),
-                                   h4("dataset2 : Real dataset, the first version"),
-                                   h4("dataset3 : Real dataset, the second version (latest)"),
-                                   selectInput("dataset","Dataset:",dir("./data")),
-                                   downloadButton('download_data','Download')
+                                   h4("1. Dekalb Main Study"),
+                                   h4("ID number : 11000-12000 and 20000-21000"),
+                                   h4("2. KEMRI Main Study"),
+                                   h4("ID number : 30000-50000 and 80000-90000"),
+                                   h4("3. Healthy Donor Study"),
+                                   h4("ID number : 400-500"),
+                                   h4("4. Dekalb Reproducibility Study"),
+                                   h4("ID number : 300-313 and D10"),
+                                   br(),
+                                   selectInput("study","Study Type:",dir("./data")),
+#                                   h2("Dataset"),
+#                                   h4("dataset0 : Test dataset, also use for testing TBRU app"),
+#                                   h4("dataset2 : Real dataset, the first version"),
+#                                   h4("dataset3 : Real dataset, the second version (latest)"),
+#                                   uiOutput("ui_study_type_data"),
+                                   selectInput("dataset","Dataset:",dir("./data/Dekalb Main")),
+                                   downloadButton('download_data','Download'),
+                                   br(),br(),
+                                   h4("The Date of the dataset"),
+                                   textOutput("date")
                                  ),
                                  mainPanel(
                                    tabsetPanel(
